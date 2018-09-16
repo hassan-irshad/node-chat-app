@@ -20,6 +20,15 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Disconnected from client');
     });
+
+    socket.emit('newMessage', {
+        from: 'Hassan',
+        text: 'Hello'
+    });
+    
+    socket.on('createMsg', function(msg) {
+        console.log(msg);
+    });
 });
 
 server.listen(port, () => {
