@@ -18,17 +18,17 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New User connected');
     
-    socket.emit('newMessage', generateMessage('Admin', 'welcome to the chat app'));
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app!'));
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
     socket.on('createMsg', function(msg, callback) {
         console.log(msg);
         io.emit('newMessage', generateMessage(msg.from, msg.text));
-        callback('This is from the server');
+        callback();
     });
 
     socket.on('createLocationMessage', (coords) => {
-        io.emit('newLocationMessage', generateLocationMessage('admin', coords.latitude , coords.longitude));
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude , coords.longitude));
     });
 
     socket.on('disconnect', () => {
