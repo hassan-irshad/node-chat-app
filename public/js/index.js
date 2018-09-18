@@ -11,21 +11,24 @@ socket.on('disconnect', function() {
 
 socket.on('newMessage', function(msg) {
     var formattedTime = moment(msg.createdAt).format('h:mm a');
-    console.log('New Message', msg);
-    var li = jQuery('<li></li>');
-    li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
-
-    jQuery('#message').append(li);
+    var template = jQuery('#message-template').html();
+    var html = Mustache.render(template, {
+        text: msg.text,
+        from: msg.from,
+        createdAt: formattedTime
+    });
+    jQuery('#message').append(html);
 });
+
 socket.on('newLocationMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var li = jQuery('<li></li>');
-    var a = jQuery('<a target="_blank">My current location</a>');
-
-    li.text(`${message.from}  ${formattedTime}: `);
-    a.attr('href', message.url);
-    li.append(a);
-    jQuery('#message').append(li);
+    var template = jQuery('#location-message-template').html();
+    var html = Mustache.render(template, {
+        from: message.from,
+        createdAt: formattedTime,
+        url: message.url
+    });
+    jQuery('#message').append(html);
 });
 
 
