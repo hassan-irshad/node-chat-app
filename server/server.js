@@ -27,6 +27,11 @@ io.on('connection', (socket) => {
         if(!isRealString(params.name) || !isRealString(lowerCaseRoomName)) {
             return callback('Name and room name are required');
         }
+        var namesArrey = users.getUserList(lowerCaseRoomName);
+        var existingUsers = namesArrey.filter((user) => user === params.name);
+        if(existingUsers.length !== 0) {
+            return callback('User name already exist, try with another username.');
+        }
         socket.join(lowerCaseRoomName);
         users.removeUser(socket.id);
         users.addUser(socket.id, params.name, lowerCaseRoomName);
